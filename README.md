@@ -201,6 +201,8 @@ I also switched the bottom mounting holes from A4 rivets to M4 bolts. Drilling r
 It would be better to drill the holes before riveting the support plate, but that isn't always possible, or obvious ahead of time. 
 Using M4 adhesive mounting studs is a much cleaner, and more expensive, option.
 
+The CAD file also includes models of the four adhesive studs positioned in the assembly, so you can check fitment before ordering. They are reference geometry only — nothing in the model gets cut, and they are not part of the STEP exports. As modelled, two pairs of adjacent stud bases overlap each other and one stud clips the edge of the bottom bracket, which is the clearance problem called out in the installation steps below.
+
 ### Parts
 
 | Part Number                   | Quantity  | Product Page | Description |

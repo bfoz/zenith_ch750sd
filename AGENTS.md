@@ -18,7 +18,7 @@ FreeCAD documents that define parts to fabricate (these are the ones in `scripts
 
 - `TrailingEdgeBracket.FCStd` — the big one, 7 bodies: `Body`, `Grommets`, `SnapBushings`, `BushingsGrommets`, `Body2Bushings3Grommets`, `OutboardTrailingEdgeBracket`, `OutboardTrailingEdgeBracketTape`
 - `ElevatorPulleyBracket.FCStd` — `Bracket` + `Base` (to be fabricated), `Pulley` (reference only), plus an `Assembly` with joints
-- `MatcoParkingBrakeBracket.FCStd` — `Top Bracket` + `Bottom Bracket` (note the spaces in the body labels) + `Assembly`; references `mcmaster/97590A711_*.STEP` studs
+- `MatcoParkingBrakeBracket.FCStd` — `Top Bracket` + `Bottom Bracket` (note the spaces in the body labels) + `Assembly`; also holds the four `97590A711` adhesive studs from `mcmaster/` as reference geometry (source `Part::Feature` plus four `App::Link` instances). The stud shape is embedded in the document, not linked to the file on disk, so the document is self-contained. Reference only — the manifest exports just the two fabricated bodies.
 - `RudderPedalBracketAssembly.FCStd` — `LeftBracket`, `RightBracket`, `Bearing` (Delrin)
 - `ACK_E04_ELT_Bracket.FCStd` — `ACK_E04_ELT_Bracket` (fab) plus `ACK_E04_ELT`, a reference model of the ELT itself
 - `FuelReturnHoseBracket.FCStd` and `WingtipWireBracket.FCStd` — single body each
