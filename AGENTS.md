@@ -23,14 +23,16 @@ FreeCAD documents that define parts to fabricate (these are the ones in `scripts
 - `ACK_E04_ELT_Bracket.FCStd` — `ACK_E04_ELT_Bracket` (fab) plus `ACK_E04_ELT`, a reference model of the ELT itself
 - `FuelReturnHoseBracket.FCStd` and `WingtipWireBracket.FCStd` — single body each
 
-Other `.FCStd` files are **not** part models and have no parts to build: `ch750sd.FCStd` (contains zero `PartDesign::Body` objects and is populated by the scratch script `ch750sd.py`). Don't add it to the manifest, and don't treat an empty body list in it as a bug.
+`ch750sd.FCStd` is a generated **airframe reference assembly** — a whole-airplane context model showing where the parts live, built by running `ch750sd.py` under `freecadcmd`. It assembles the `stl/*.stl` airframe parts (imported as meshes and scaled ×1000, because eDrawings exports in metres and FreeCAD reads millimetres) into one `Assembly::AssemblyObject`, then adds external `App::Link`s to the ELT bracket and ELT bodies in `ACK_E04_ELT_Bracket.FCStd` at fixed positions. It is not a part model and has nothing to fabricate: don't add it to the manifest, and don't treat its empty body list as a bug. The script re-runs cleanly and overwrites the file each time. It opens `ACK_E04_ELT_Bracket.FCStd` (which is add-on-backed) but **only ever saves `ch750sd.FCStd`**, so it cannot trigger the save-time data-loss described below — the add-on should still be installed so the source opens without the blocked-import warning.
+
+The three pieces form one pipeline: `export_stl.applescript` exports the airframe STLs into `stl/`, and `ch750sd.py` consumes them. They are related, not independent scratch.
 
 Other paths:
 
 - `mcmaster/` — McMaster-Carr supplier STEP models for purchased hardware
 - `scripts/` — `parts.manifest` and `export_step.py` (see Building STEP files)
 - `.github/workflows/release.yaml` — release automation; `step-files.yaml` — STEP generation (see Releases)
-- `export_stl.applescript` and `stl/` — scratch STL tooling, referenced by nothing; leave them untracked unless asked (`__pycache__/` directories and `.env` are gitignored)
+- `export_stl.applescript` and `stl/` — the airframe STL export step that feeds `ch750sd.py` (see the reference assembly above); `stl/` holds ~24 mesh files (~10 MB) and is regenerable from the airframe CAD via the applescript. Leave them untracked unless asked.
 
 ## FreeCAD environment
 
