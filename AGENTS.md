@@ -36,6 +36,7 @@ Other paths:
 
 - App bundle: `/Applications/FreeCAD.app` — FreeCAD 1.1.4
 - Headless CLI: `/Applications/FreeCAD.app/Contents/Resources/bin/freecadcmd script.py` (also `.../bin/python`)
+- **Save documents uncompressed.** The FreeCAD "create compressed file" option is off, deliberately, and should stay off. An uncompressed `.FCStd` holds plain-text `CASCADE Topology` BREP in stored (non-deflated) zip members, which git reads and delta-compresses well; a compressed one is already deflated, so git stores each revision at near its full size with no delta. Disk size is irrelevant at this scale, so optimise for history. A still-compressed document converts the next time it is saved from the GUI — expect it to grow several-fold on disk at that moment; that is the conversion, not corruption. To classify any document: pack it and compare the packed blob size to the file size (`git verify-pack` ratio near `1.0` = compressed, under `~0.1` = uncompressed/delta-friendly).
 
 ### The Sheet Metal workbench add-on is a hard dependency
 
