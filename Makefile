@@ -27,7 +27,7 @@ FREECAD ?= $(shell \
 export LC_ALL := C
 export ZENITH_STEP_DIR := $(STEP_DIR)
 
-.PHONY: all check force list step-files clean clean-steps help $(PART_NAMES)
+.PHONY: all check force list step-files check-stl clean clean-steps help $(PART_NAMES)
 
 # The export script decides what is stale: a STEP file is rebuilt when it is missing or older than its source document.
 # Staleness lives in the script rather than in make because one document produces several STEP files whose names contain spaces.
@@ -65,6 +65,11 @@ list:
 step-files:
 	@awk -F'|' '/^[[:space:]]*#/ || /^[[:space:]]*$$/ { next } NF == 3 { gsub(/^[[:space:]]+|[[:space:]]+$$/, "", $$3); print "$(STEP_DIR)/" $$3 }' $(MANIFEST)
 
+# Check that export_stl.applescript's part_list and stl/ describe the same set of parts.
+# ch750sd.py runs the same check before building, so this is for a quick look without FreeCAD.
+check-stl:
+	@python3 scripts/check_stl_list.py
+
 # Remove the declared outputs, leaving any stray scratch file in place.
 clean-steps:
 	@$(MAKE) --no-print-directory step-files | while IFS= read -r step_file; do \
@@ -84,6 +89,7 @@ help:
 	@echo "  make force           same as check: ignore timestamps"
 	@echo "  make list            show document / body / output for each part"
 	@echo "  make step-files      print output paths, one per line (for CI)"
+	@echo "  make check-stl       verify export_stl.applescript matches stl/"
 	@echo "  make <document>      build one document, e.g. make TrailingEdgeBracket"
 	@echo "  make clean-steps     remove the declared STEP files"
 	@echo "  make clean           remove $(STEP_DIR) entirely, including scratch files"

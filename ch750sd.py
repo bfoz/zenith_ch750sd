@@ -2,6 +2,7 @@
 
 # Imports STL files and adds them to a FreeCAD document
 
+import sys
 from pathlib import Path
 
 import FreeCAD
@@ -9,6 +10,9 @@ import Part
 
 from Mesh import Mesh
 from Part import Shape
+
+sys.path.insert(0, str(Path(__file__).resolve().parent / "scripts"))
+from check_stl_list import check as check_stl_list  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -80,6 +84,16 @@ COMPONENT_TYPES = (
     "Mesh::Feature",
     "App::Link",
 )
+
+# The assembly is built by globbing stl/, so anything on disk lands in it whether or
+# not export_stl.applescript declares it. Check the two agree before doing any work:
+# a silent mismatch is otherwise only noticed by someone who spots a missing part.
+ok, report = check_stl_list(Path(__file__).resolve().parent)
+if not ok:
+    # freecadcmd discards unflushed output on sys.exit, so flush explicitly.
+    print(report, file=sys.stderr, flush=True)
+    sys.exit(1)
+print(report, flush=True)
 
 document_name = "ch750sd"
 assembly_name = "CH750SD"
