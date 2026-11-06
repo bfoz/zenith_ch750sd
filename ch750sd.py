@@ -51,6 +51,17 @@ EXTERNAL_PARTS = [
     # The seat is not the block's minimum Y: on a 2.8-degree slope the lowest
     # corner sits about 1.3mm below the surface at the bracket's own station,
     # so seating on the plane rather than the corner matters.
+    # DO NOT "correct" this to line the bore up with the pedal shaft. The
+    # bracket is rigid, and its bore-to-rivet and bore-to-plate geometry differs
+    # from the kit block's by about 0.8mm in each direction, so no placement
+    # satisfies bore, rivets and floor at once: centring the bore on the shaft
+    # (measured 0.750/0.750 on both sides) drops the plate 0.79mm through the
+    # floor and walks the rivets 0.77mm off the existing pattern. Rivet and floor
+    # alignment win; the bore is left 1.06mm off. That is acceptable because the
+    # bracket bore is r10.5 while the nearest cylindrical surface fitted in the
+    # pedal mesh is r9.5, so there is about 1mm of radial clearance for the
+    # offset to disappear into. Only a redesign of the bracket holes would close
+    # all three constraints.
     # These two must be referenced by internal Name (Body / Body002), not by
     # the "LeftBracket"/"RightBracket" labels: the assembly also contains an
     # App::Link whose internal Name is RightBracket, so resolve_target() would
