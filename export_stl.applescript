@@ -2,19 +2,25 @@ on run {input_file, output_path}
     -- This must stay inside the run handler: AppleScript rejects a script that has top-level statements *and* an `on run` handler (error -2752)
     -- Wrapped list items need the explicit line-continuation character (option-L in Script Editor); a bare newline inside the braces fails with -2741
     -- A trailing comma before the closing brace is likewise a syntax error, though a trailing continuation mark is accepted.
-    -- Parts to export. A -- comment inside the list braces is also a syntax error (-2741),
-    -- so temporarily excluded parts are parked in the block below instead of commented out
-    -- inside the list; move a name back up into the list to re-enable it.
-    --   "75F16-2 FORWARD TOP SKIN-3"
-    --   "C75F8-3   FIREWALL SIDE STIFFENER-1"
-    --   "C75F8-4   FIREWALL TOP STIFFENER-1"
-    --   "C75F8-6   SIDE BRACE-4"
-    --   "C75F8-8   SLIDE COVER-1"
-    --   "C75F8-8   SLIDE COVER-2"
-    --   "MirrorSD75F40-1 FORWARD SIDE SKIN-2"
-    --   "SD75F40-1 FORWARD SIDE SKIN-1"
-    --   "SD75F40-4 FIREWALL - SQUARE BOTTOM-2"
+    -- Parts to export. This is the complete set of meshes in stl/, so that running
+    -- this script reproduces the STL files ch750sd.py expects. Keep it in step with
+    -- stl/: a mesh missing from this list is silently missing from the reference
+    -- assembly, and ch750sd.py just globs whatever is on disk.
+    -- Names must match the eDrawings window titles, which are the part names; they
+    -- are what the generated STL files are named after.
+    -- A -- comment inside the list braces is a syntax error (-2741), so to exclude a
+    -- part temporarily, cut the line out rather than commenting it in place.
     set part_list to {¬
+        "75F16-2 FORWARD TOP SKIN-3", ¬
+        "C75C3-3 RUDDER PEDALS - LEFT-1", ¬
+        "C75C3-3 RUDDER PEDALS - RIGHT-1", ¬
+        "C75C3-6 LATERAL PEDAL BEARING LEFT-2", ¬
+        "C75C3-6 LATERAL PEDAL BEARING-3", ¬
+        "C75F8-3   FIREWALL SIDE STIFFENER-1", ¬
+        "C75F8-4   FIREWALL TOP STIFFENER-1", ¬
+        "C75F8-6   SIDE BRACE-4", ¬
+        "C75F8-8   SLIDE COVER-1", ¬
+        "C75F8-8   SLIDE COVER-2", ¬
         "C75F9-1   FORWARD GUSSET-1", ¬
         "C75F9-2   UPPER ANGLE-1", ¬
         "C75F9-7   UPPER FIREWALL CHANNEL-1", ¬
@@ -26,10 +32,13 @@ on run {input_file, output_path}
         "MirrorC75F8-6   SIDE BRACE-7", ¬
         "MirrorLS75F18-1   VERTICAL L ANGLE-4", ¬
         "MirrorLS75F18-2   DIAGONAL L ANGLE-2", ¬
+        "MirrorSD75F40-1 FORWARD SIDE SKIN-2", ¬
         "MirrorSD75F40-13   GEAR GUSSET-2", ¬
         "SD75F19-1   LONGITUDINAL Z ANGLE -3", ¬
         "SD75F19-2   LATERAL  Z ANGLE -1", ¬
-        "SD75F40-13   GEAR GUSSET-1"¬
+        "SD75F40-1 FORWARD SIDE SKIN-1", ¬
+        "SD75F40-13   GEAR GUSSET-1", ¬
+        "SD75F40-4 FIREWALL - SQUARE BOTTOM-2"¬
     }
 
     if output_path is missing value then
