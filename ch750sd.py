@@ -61,17 +61,43 @@ EXTERNAL_PARTS = [
     # satisfies bore, rivets and floor at once: centring the bore on the shaft
     # (measured 0.750/0.750 on both sides) drops the plate 0.79mm through the
     # floor and walks the rivets 0.77mm off the existing pattern. Rivet and floor
-    # alignment win; the bore is left 1.06mm off. That is acceptable because the
-    # bracket bore is r10.5 while the nearest cylindrical surface fitted in the
-    # pedal mesh is r9.5, so there is about 1mm of radial clearance for the
-    # offset to disappear into. Only a redesign of the bracket holes would close
-    # all three constraints.
+    # alignment win; the bore is left 1.06mm off. Note that this is marginal
+    # rather than comfortably safe: the bracket bore is r10.5 against a tube
+    # measured at r9.5 (a ring of 64 points in the kit block's own bore at this
+    # station), so 1.0mm of radial clearance has to absorb 1.06mm of offset, i.e.
+    # it is about 0.06mm tight. The tube itself is not in the STL set at these
+    # stations, so this cannot be confirmed from these files, and a powder coat
+    # on the tube makes it tighter still. Only a redesign of the bracket holes
+    # would close all three constraints.
     # These two must be referenced by internal Name (Body / Body002), not by
     # the "LeftBracket"/"RightBracket" labels: the assembly also contains an
     # App::Link whose internal Name is RightBracket, so resolve_target() would
     # match that link first and produce a link pointing at a link.
     ("RudderPedalBracketAssembly.FCStd", "Body", "Rudder Pedal Bracket L", (344.498, -1032.546, 7879.352, -90, 87.164, 180)),
     ("RudderPedalBracketAssembly.FCStd", "Body002", "Rudder Pedal Bracket R", (-346.2, -1031.214, 7911.385, 90, -87.164, 180)),
+    # Delrin bearing blocks, inboard of each bracket with its bore coaxial with
+    # that bracket's tube hole. The source file models one bearing body and links
+    # it twice, so the same is done here; the two placements differ only in
+    # position, both bores running along the lateral axis.
+    # These are not hand-measured. Each is the bracket placement composed with the
+    # bracket-to-bearing transform measured inside the source assembly, so the
+    # pair keeps the relative arrangement the source file already has while
+    # spreading out to the wider bracket spacing in the airframe.
+    # Coaxiality is not an assumption: the Delrin's two r2.5 bolt holes land on the
+    # bracket's r2.5 bolt holes to 0.0005mm, so the Delrin is captured by the
+    # bracket and the two bores are one axis. It therefore cannot be centred on
+    # the tube independently of the bracket, and it inherits the bracket's
+    # deliberate 1.06mm offset (see the note above).
+    # That is worth knowing before ordering Delrin. The bore is r9.75 against a
+    # tube measured at r9.5 from the kit block's own bore at this station, so the
+    # intended clearance is 0.25mm per side, while the offset alone is 1.06mm. The
+    # STL set does not include the tube at these stations, so the fit cannot be
+    # confirmed from these files. Either the Delrin bore needs to open to ~10.6mm
+    # to clear at the offset, or the offset has to go, which means giving up the
+    # existing rivet pattern. The README already tells builders to adjust the hole
+    # size, so this is a note rather than a defect in the exported geometry.
+    ("RudderPedalBracketAssembly.FCStd", "Body001", "Rudder Pedal Bearing L", (326.323, -1015.062, 7878.486, 90, -87.164, -90)),
+    ("RudderPedalBracketAssembly.FCStd", "Body001", "Rudder Pedal Bearing R", (-321.167, -1013.730, 7910.519, 90, -87.164, -90)),
 ]
 
 # Types that make sense as an assembly component. Used by the fallback
