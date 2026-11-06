@@ -36,7 +36,20 @@ EXTERNAL_PARTS = [
     ("ACK_E04_ELT_Bracket.FCStd", "ACK_E04_ELT_Bracket", "ELT Bracket", (334, -838.22, 5737.74, 0, 0, -90)),
     ("ACK_E04_ELT_Bracket.FCStd", "ACK_E04_ELT", "ELT", (298.98, -837.22, 5834.16, 0, 0, -90)),
     # Rudder pedal brackets, replacing the kit's C75C3-6 lateral pedal bearing
-    # blocks (also in stl/). In their own file the base plate lies in local XY
+    # blocks. Those kit blocks are deliberately not exported to stl/ any more (see
+    # the note in export_stl.applescript), so the assembly shows the as-built
+    # parts at this station.
+    # Because the meshes are gone, the absolute pose they supplied as the datum for
+    # the placement below is recorded here, in the coordinate system the meshes land
+    # in (the same one these placements are written in). Both measure about 25.4mm
+    # along X, 40.0mm in Y and 55.9mm in Z:
+    #   L  X  330.83.. 356.25  Y -1033.87.. -993.92  Z 7851.66.. 7907.53
+    #   R  X -356.88..-331.48  Y -1032.54.. -992.58  Z 7883.69.. 7939.56
+    # Every figure quoted in the rest of this comment block was measured from those
+    # two meshes. To re-derive anything here, re-export them and check against the
+    # boxes above before trusting the result. The C75C3-3 pedal meshes are still
+    # exported, so the pedal-axis side of the derivation can always be re-checked.
+    # In their own file the base plate lies in local XY
     # with its normal on +Z and the rudder-tube hole runs along local Y, so a
     # half turn about the vertical axis lays the plate flat with the tube
     # running across the cabin and the mounting flange inboard; the two sides

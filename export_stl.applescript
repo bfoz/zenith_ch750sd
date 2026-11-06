@@ -10,12 +10,17 @@ on run {input_file, output_path}
     -- are what the generated STL files are named after.
     -- A -- comment inside the list braces is a syntax error (-2741), so to exclude a
     -- part temporarily, cut the line out rather than commenting it in place.
+    -- Deliberately absent: the two C75C3-6 lateral pedal bearing blocks. The
+    -- rudder pedal brackets in RudderPedalBracketAssembly.FCStd replace them, so
+    -- the reference assembly shows the as-built parts at that station instead of
+    -- the kit parts they supersede. They are still in the airframe document, so
+    -- to bring them back cut the two lines back in:
+    --     "C75C3-6 LATERAL PEDAL BEARING LEFT-2"
+    --     "C75C3-6 LATERAL PEDAL BEARING-3"
     set part_list to {¬
         "75F16-2 FORWARD TOP SKIN-3", ¬
         "C75C3-3 RUDDER PEDALS - LEFT-1", ¬
         "C75C3-3 RUDDER PEDALS - RIGHT-1", ¬
-        "C75C3-6 LATERAL PEDAL BEARING LEFT-2", ¬
-        "C75C3-6 LATERAL PEDAL BEARING-3", ¬
         "C75F8-3   FIREWALL SIDE STIFFENER-1", ¬
         "C75F8-4   FIREWALL TOP STIFFENER-1", ¬
         "C75F8-6   SIDE BRACE-4", ¬
