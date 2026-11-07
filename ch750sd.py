@@ -111,6 +111,46 @@ EXTERNAL_PARTS = [
     # size, so this is a note rather than a defect in the exported geometry.
     ("RudderPedalBracketAssembly.FCStd", "Body001", "Rudder Pedal Bearing L", (326.323, -1015.062, 7878.486, 90, -87.164, -90)),
     ("RudderPedalBracketAssembly.FCStd", "Body001", "Rudder Pedal Bearing R", (-321.167, -1013.730, 7910.519, 90, -87.164, -90)),
+    # Elevator pulley brackets, just forward of the jump seat rear channel
+    # (LS75F33-1, spanning Z 6070.8..6112.8, its web at Z 6088..6095). Linking the
+    # source document's Assembly object rather than the individual bodies: it
+    # already aggregates Bracket + Base + the reference Pulley in the right relative
+    # positions (the pulley hangs from a Revolute joint at local Z 27.5), so one
+    # placement carries the whole unit instead of three hand-composed ones.
+    # Orientation. In the source file the base plate lies in local XY with its
+    # thickness on Z and the upright rises along that same local Z, 50mm above the
+    # plate, so a single rotation lays the plate down and stands the wall up. The
+    # mapping local X -> +Z (fore-aft), local Y -> lateral, local Z -> +Y (up)
+    # leaves the pulley axis lateral, which is what a cable running fore-aft along
+    # the floor needs: an X-axis pulley deflects within the vertical-longitudinal
+    # plane. That gives (0, -90, 270) for the left unit and (0, +90, 270) for the
+    # right, the second being the first turned 180 degrees about the vertical.
+    # A mirror is not a rotation, so the half turn is the only option, but it costs
+    # nothing here: the unit is almost symmetric about local Y (the pulley sits at
+    # Y 0.0625 on a plate spanning -30..30), so rotating it rather than mirroring
+    # it moves everything by an eighth of a millimetre.
+    # Lateral position is unconstrained and was taken from the C75C4-3 rudder cable
+    # fair leads (centres X +68.67 and -76.33) purely to put the units somewhere
+    # plausible. They are rudder parts, so they say nothing about where elevator
+    # pulleys belong; what they do give is the fuselage centreline, X -3.83 rather
+    # than 0, and the channel agrees (-468.86..461.18). Mirroring the two sides
+    # about X 0 would therefore be wrong by about 4mm each way; mirror about -3.83.
+    # Y = -957 is a PLACEHOLDER, not a measurement. The bottom skin mesh has no
+    # vertices at all between Z 6100 and Z 6225, so the cabin floor surface under
+    # these plates is simply not in the STL set. -957 was taken from the bottom
+    # skin nearby (its top surface runs -949.2 at Z 6050..6075 and its lowest
+    # points -957.3 at Z 6000..6100), which brackets the value but does not pin it;
+    # for reference the channel's own lowest flange reaches -959.5. Set Y by eye
+    # against the real floor, or export the floor panel that covers this station.
+    # Z centres the 50mm plate at 6140, so it starts 2mm forward of the channel's
+    # forward face. Chosen only to keep clear of the channel; the real constraint
+    # is the elevator cable run, which is not in the STL set either.
+    # PROVISIONAL. Orientation is derived (see above) and can be trusted; position
+    # is not. Nothing constrains Z laterally except the fair lead centres, nothing
+    # constrains Y except the placeholder, and the cable line that actually
+    # determines both is absent. Expect all three to move.
+    ("ElevatorPulleyBracket.FCStd", "Assembly", "Elevator Pulley Bracket L", (68.67, -957.0, 6140, 0, -90, 270)),
+    ("ElevatorPulleyBracket.FCStd", "Assembly", "Elevator Pulley Bracket R", (-76.33, -957.0, 6140, 0, 90, 270)),
 ]
 
 # Types that make sense as an assembly component. Used by the fallback

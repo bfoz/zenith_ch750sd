@@ -21,6 +21,8 @@ on run {input_file, output_path}
         "75F16-2 FORWARD TOP SKIN-3", ¬
         "C75C3-3 RUDDER PEDALS - LEFT-1", ¬
         "C75C3-3 RUDDER PEDALS - RIGHT-1", ¬
+        "C75C4-3   RUDDER CABLE FAIR LEAD-1", ¬
+        "C75C4-3   RUDDER CABLE FAIR LEAD-2", ¬
         "C75F8-3   FIREWALL SIDE STIFFENER-1", ¬
         "C75F8-4   FIREWALL TOP STIFFENER-1", ¬
         "C75F8-6   SIDE BRACE-4", ¬
@@ -30,6 +32,7 @@ on run {input_file, output_path}
         "C75F9-2   UPPER ANGLE-1", ¬
         "C75F9-7   UPPER FIREWALL CHANNEL-1", ¬
         "LS75F1-1 BOTTOM FUSELAGE SKIN-1", ¬
+        "LS75F33-1   JUMPSEAT REAR CHANNEL-1", ¬
         "LS75F8-9   L ANGLE - FIREWAL AND TOP STIFFENER -1", ¬
         "LS75F9-4  CENTER FREWALL STIFFENER-3", ¬
         "MirrorC75F2-2 BOTTM EXT.-3", ¬
