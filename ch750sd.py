@@ -144,23 +144,39 @@ EXTERNAL_PARTS = [
     # about 11.5mm, not 1mm: it spans 50mm along a 12-degree slope. That is correct,
     # not a sign the plate is standing on end.
     #
-    # X puts each unit on one of the inner two openings in the channel web. All four
-    # openings measure about 183mm wide at X centres -364.5, -180.5, +174.5 and
-    # +358.5. UNRESOLVED: which pair the cables use. The builder's description is two
-    # upper and two lower holes, but in this mesh all four sit at the same height
-    # (Y -950..-835), so upper and lower cannot be told apart from these files and
-    # the inner pair is a guess. If the outer pair is right, move X to -364.5 and
-    # +358.5 and leave everything else alone.
-    # Z centres the plate at 6145, putting its aft end at Z 6120.6, about 8mm clear
-    # of the channel flange, and the pulley's aft edge 16mm clear of the web.
-    # Still provisional: the elevator cable line itself is not in the STL set, so it
-    # cannot confirm Z or the choice of opening.
-    ("ElevatorPulleyBracket.FCStd", "Body", "Elevator Pulley Bracket L", (174.5, -966.552, 6145.0, -90, -77.9014, 0)),
-    ("ElevatorPulleyBracket.FCStd", "Body001", "Elevator Pulley Base L", (174.5, -966.552, 6145.0, -90, -77.9014, 0)),
-    ("ElevatorPulleyBracket.FCStd", "Body002", "Elevator Pulley L", (174.562, -939.663, 6150.764, 0, 0, -77.9014)),
-    ("ElevatorPulleyBracket.FCStd", "Body", "Elevator Pulley Bracket R", (-180.5, -966.672, 6145.0, 90, 77.9014, 0)),
-    ("ElevatorPulleyBracket.FCStd", "Body001", "Elevator Pulley Base R", (-180.5, -966.672, 6145.0, 90, 77.9014, 0)),
-    ("ElevatorPulleyBracket.FCStd", "Body002", "Elevator Pulley R", (-180.562, -939.783, 6150.764, -180, 0, 77.9014)),
+    # X aligns each pulley with the elevator cable bearing set into the channel web
+    # directly above it: a pulley must sit in the plane of the cable running over it
+    # or the cable skews off the groove, so the pulley's X is its bearing's X. Those
+    # are the LS75C34-5 ELEVATOR CABLE BEARING - JUMPSEAT parts in stl/, centres
+    # X +46.18 and -53.49, Y -926.4 and -929.8, Z 6085.45. Spacing 99.67mm, and the
+    # two share a Z to 0.01mm, so the pair is symmetric fore-aft with only a ~3.5mm
+    # offset each way about the centreline. Each bearing then sits 12.7mm above and
+    # 62.5mm aft of its sheave centre, so the cable descends about 11 degrees onto
+    # the groove, which is the arrangement in the photograph.
+    #
+    # The C75C4-3 parts used here before are RUDDER cable fair leads, exported by
+    # mistake. Their centres (X +68.67 and -76.33, 145mm apart, 35x35mm pads 3.4mm
+    # thick in the web plane at Z 6088..6095) are still in stl/ and still modelled,
+    # because they belong to the airframe, but they are not this bracket's datum.
+    #
+    # The four big 183mm openings, at X -364.5, -180.5, +174.5 and +358.5, are also
+    # NOT cable routes and were a wrong guess. Putting the pulleys on them gave 355mm
+    # spacing, far too wide, and the cable bearings lie in the web material between
+    # them rather than inside any opening. Earlier notes here debating which pair of
+    # big openings the cables use were asking the wrong question.
+    #
+    # Z centres the plate so its aft end clears the channel bottom flange (forward
+    # face Z 6112.8) by 5mm: half the plate's 50mm length along the 12.101 degree
+    # slope is 24.44mm in Z, giving a centre of 6142.25. The fore-aft cable run is
+    # not in the STL set, so this is a clearance fit, not a measurement. Sliding the
+    # plate fore or aft along the floor would carry the pulley out of the bearing
+    # plane, so the X alignment above is what actually pins the station.
+    ("ElevatorPulleyBracket.FCStd", "Body", "Elevator Pulley Bracket L", (46.18, -966.005, 6142.245, -90, -77.9014, 0)),
+    ("ElevatorPulleyBracket.FCStd", "Body001", "Elevator Pulley Base L", (46.18, -966.005, 6142.245, -90, -77.9014, 0)),
+    ("ElevatorPulleyBracket.FCStd", "Body002", "Elevator Pulley L", (46.243, -939.116, 6148.009, 0, 0, -77.9014)),
+    ("ElevatorPulleyBracket.FCStd", "Body", "Elevator Pulley Bracket R", (-53.49, -966.039, 6142.245, 90, 77.9014, 0)),
+    ("ElevatorPulleyBracket.FCStd", "Body001", "Elevator Pulley Base R", (-53.49, -966.039, 6142.245, 90, 77.9014, 0)),
+    ("ElevatorPulleyBracket.FCStd", "Body002", "Elevator Pulley R", (-53.553, -939.15, 6148.009, -180, 0, 77.9014)),
 ]
 
 # Types that make sense as an assembly component. Used by the fallback
