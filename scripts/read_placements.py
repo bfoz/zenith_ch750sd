@@ -78,11 +78,14 @@ def render(rows):
     if len(notes) > 1:
         out.extend(notes)
 
-    out.append("# reminder: the Elevator Pulley Bracket / Base / Pulley links are one unit.")
-    out.append("# Drag all three of a side together, or move just the bracket and base and")
-    out.append("# say so - the pulley placement is the unit placement composed with its")
-    out.append("# internal offset (0, 0.0625, 27.5) Euler (90,0,0), so it can be recomputed")
-    out.append("# rather than measured. Same for the rudder pedal bearing and its bracket.")
+    out.append("# reminder: the Elevator Pulley links are NOT one rigid unit.")
+    out.append("# The bracket rests on the cabin face of the floor skin and the base plate")
+    out.append("# sits under the skin, so the base is the unit placement slid along the")
+    out.append("# floor normal and must be dragged separately from the bracket. The pulley")
+    out.append("# does ride with the bracket: its placement is the bracket placement")
+    out.append("# composed with the internal offset (0, 0.0625, 27.5) Euler (90,0,0), so it")
+    out.append("# can be recomputed rather than measured. Same for the rudder pedal")
+    out.append("# bearing and its bracket.")
     return "\n".join(out) + "\n"
 
 

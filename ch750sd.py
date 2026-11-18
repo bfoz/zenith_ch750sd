@@ -119,11 +119,14 @@ EXTERNAL_PARTS = [
     # unit, and it loads fine headless, but in the GUI both links came up "Link not
     # restored" and rendered nothing. Linking the PartDesign bodies instead, which
     # is what the rudder pedal entries above already do and which does restore.
-    # Inside the source Assembly the Bracket (Name Body) and Base (Name Body001)
-    # links are both at identity, so they take the unit placement directly; the
-    # Pulley (Name Body002) link is at Base=(0, 0.0625, 27.5) Euler=(90,0,0), so its
-    # tuple below is that composed with the unit placement rather than being
-    # measured by hand.
+    # The three bodies of one unit do NOT share a placement. Inside the source
+    # Assembly the Bracket (Name Body) and Base (Name Body001) links are both at
+    # identity and the Pulley (Name Body002) link is at Base=(0, 0.0625, 27.5)
+    # Euler=(90,0,0), but here the bracket sits on top of the floor skin and the
+    # base plate goes under it, so they cannot be coaxial. The Bracket tuple is the
+    # unit placement, the Pulley tuple is that composed with the link offset above
+    # rather than being measured by hand, and the Base tuple is the unit placement
+    # slid along the floor normal to the underside. See the skin note below.
     #
     # Orientation. The base plate lies in local XY with the 50mm upright on local Z,
     # so local X -> along the floor fore-aft, local Y -> lateral, local Z -> the
@@ -139,10 +142,31 @@ EXTERNAL_PARTS = [
     # not a rotation), and costs nothing since the unit is nearly symmetric about
     # local Y.
     #
-    # Y = floor_y(X, Z) from the fit above, so the plate underside sits on the floor
-    # surface at the plate centre. Note the plate's own Y extent then comes out at
-    # about 11.5mm, not 1mm: it spans 50mm along a 12-degree slope. That is correct,
-    # not a sign the plate is standing on end.
+    # THE FIT IS THE SKIN MIDPLANE, NOT ITS UPPER SURFACE. A least-squares over all
+    # of a mesh's points averages the two faces, so this plane runs through the
+    # middle of the bottom skin, not along the surface a builder would put a part
+    # on. Measuring the skin LS75F1-1 in this neighbourhood gives thickness 0.5080mm
+    # (0.020in), with its two faces as tight 599-point clusters at
+    #     cabin (upper) face     h = +0.2361
+    #     outside (lower) face   h = -0.2719
+    # above the fitted plane, where h is signed height along the floor normal,
+    # positive into the cabin. Refitting locally over the skin points in each plate's
+    # own X band returns the same plane and the same thickness, which matters because
+    # the skin STL happens to have no sampled points inside either plate footprint.
+    #
+    # So the two parts of the unit are placed relative to the two skin faces:
+    # the bracket's lowest material rests on the CABIN face (lifted 0.2361mm along
+    # the floor normal from the fit), and the base plate's cabin-facing face is
+    # tangent to the OUTSIDE face, so the plate occupies h -1.29..-0.27 and the
+    # 0.508mm skin sits in the clamp between plate and bracket. Before this both
+    # bodies were put on the midplane and so each bit into the skin. README step 9
+    # says the base plates can be installed inside or outside, purely aesthetic; this
+    # assembly depicts them outside, which is also how step 10 rivets them.
+    #
+    # Y = floor_y(X, Z) from the fit above plus the h offset each body needs. Note
+    # the plate's own Y extent then comes out at about 11.5mm, not 1mm: it spans
+    # 50mm along a 12-degree slope. That is correct, not a sign the plate is
+    # standing on end.
     #
     # X aligns each pulley with the elevator cable bearing set into the channel web
     # directly above it: a pulley must sit in the plane of the cable running over it
@@ -151,7 +175,7 @@ EXTERNAL_PARTS = [
     # X +46.18 and -53.49, Y -926.4 and -929.8, Z 6085.45. Spacing 99.67mm, and the
     # two share a Z to 0.01mm, so the pair is symmetric fore-aft with only a ~3.5mm
     # offset each way about the centreline. Measured to the sheave centres the
-    # bearings then stand 57.5mm aft of and 11.6mm (left) / 8.3mm (right) above
+    # bearings then stand 57.5mm aft of and 11.4mm (left) / 8.0mm (right) above
     # them, so the cables descend onto the grooves at 11 and 8 degrees, which is
     # the arrangement in the photograph. The two angles differ only because the
     # bearings themselves are 3.4mm apart in Y, not because the units are placed
@@ -168,29 +192,45 @@ EXTERNAL_PARTS = [
     # them rather than inside any opening. Earlier notes here debating which pair of
     # big openings the cables use were asking the wrong question.
     #
-    # Z butts the plate's aft end against the forward face of the channel's lower
-    # flange (the lip at Y -959.5..-950 that projects forward to Z 6112.75). That
-    # face is perpendicular to the fore-aft axis, read from the STL facets: it
-    # stands at Z 6112.751 across the left plate's X span and 6112.763 across the
-    # right's, so each side gets its own station. Adding half the plate's 50mm
-    # length along the 12.101 degree slope, 24.445mm in Z, gives centres of
-    # 6137.196 and 6137.208.
-    # Verified by transforming every channel point into each body's local frame and
-    # querying the B-rep: zero points inside any solid, and both plate aft ends
-    # land with a 0.0000mm gap to their face. The plate's aft edge spans Y
-    # -959.68..-958.71 and the flange material starts at Y -959.49, so contact is
-    # the upper 0.78mm of that 60mm edge, flat against the flange face, not a corner
-    # touch. Where the upright overlaps the channel above the lip the clearance is
-    # 21.4mm, and the pulley clears by 12.0mm, so nothing else fouls.
-    # Earlier here the centre sat at 6142.245, a 5mm design gap rather than contact.
-    # The move is purely along the floor, so X, and with it the pulley-to-bearing
-    # alignment above, is untouched.
-    ("ElevatorPulleyBracket.FCStd", "Body", "Elevator Pulley Bracket L", (46.18, -964.923, 6137.196, -90, -77.9014, 0)),
-    ("ElevatorPulleyBracket.FCStd", "Body001", "Elevator Pulley Base L", (46.18, -964.923, 6137.196, -90, -77.9014, 0)),
-    ("ElevatorPulleyBracket.FCStd", "Body002", "Elevator Pulley L", (46.243, -938.034, 6142.96, 0, 0, -77.9014)),
-    ("ElevatorPulleyBracket.FCStd", "Body", "Elevator Pulley Bracket R", (-53.49, -964.959, 6137.208, 90, 77.9014, 0)),
-    ("ElevatorPulleyBracket.FCStd", "Body001", "Elevator Pulley Base R", (-53.49, -964.959, 6137.208, 90, 77.9014, 0)),
-    ("ElevatorPulleyBracket.FCStd", "Body002", "Elevator Pulley R", (-53.553, -938.07, 6142.972, -180, 0, 77.9014)),
+    # Station (Z) butts the bracket's aft end against the forward face of the
+    # channel's lower flange (the lip at Y -959.5..-950 that projects forward to
+    # Z 6112.75). That face is perpendicular to the fore-aft axis, read from the STL
+    # facets: it stands at Z 6112.751 across the left bracket's X span and 6112.763
+    # across the right's, so each side gets its own station. The station is solved
+    # iteratively against the solid rather than computed as face + 24.445mm, because
+    # lifting the unit onto the cabin face along the floor normal also raises Z by
+    # 0.0495mm, and the contacting point is the lowest point of the upright's foot,
+    # not the plate centre.
+    # Verified by transforming every channel and skin point into each body's local
+    # frame and querying the B-rep with isInside (validated first with positive and
+    # negative controls on this geometry): zero points inside any of the six solids.
+    # The skin is clamped between the two plates with no penetration of either.
+    # distToShape against the channel mesh vertices, which is a stricter test than
+    # the point-membership sweep, gives the bracket foot 0.235mm (L) / 0.234mm (R)
+    # from the channel and the base plate 0.648mm (L) / 0.642mm (R). Treat those as
+    # the honest clearances rather than claiming contact: the flange's forward-most
+    # material varies over the lip band by a few tenths of a millimetre (Z 6112.54
+    # at the outboard edge of the lip, 6112.763 further inboard), so "touching" is
+    # inside the resolution of the airframe mesh here.
+    # Worth flagging to anyone who moves this again: dropping the base plate under
+    # the skin carries its aft end past the flange face too, because the station is
+    # constrained by the bracket's foot. The plate ends up passing 0.64mm below the
+    # channel lip. That is clear of the mesh as modelled, but it is a tight margin
+    # against a formed channel, and a real part may want the plate's aft corner
+    # cleared or the station brought forward.
+    # Earlier here the station came from plate centre = flange face + 24.445mm with
+    # the unit left on the midplane, which put 0.236mm of both bodies inside the
+    # skin; before that the centre sat at 6142.245, a 5mm design gap rather than
+    # contact.
+    # The bracket base Z values below happen to land on 6137.196 and 6137.208 again,
+    # the same to 3dp as the pre-lift numbers. Not a coincidence to lean on: the
+    # solved station is 6137.146 and 6137.158, and the lift adds 0.0495mm of Z.
+    ("ElevatorPulleyBracket.FCStd", "Body", "Elevator Pulley Bracket L", (46.18, -964.679, 6137.196, -90, -77.9014, 0)),
+    ("ElevatorPulleyBracket.FCStd", "Body001", "Elevator Pulley Base L", (46.18, -966.166, 6136.877, -90, -77.9014, 0)),
+    ("ElevatorPulleyBracket.FCStd", "Body002", "Elevator Pulley L", (46.242, -937.789, 6142.96, 0, 0, -77.9014)),
+    ("ElevatorPulleyBracket.FCStd", "Body", "Elevator Pulley Bracket R", (-53.49, -964.715, 6137.208, 90, 77.9014, 0)),
+    ("ElevatorPulleyBracket.FCStd", "Body001", "Elevator Pulley Base R", (-53.49, -966.202, 6136.889, 90, 77.9014, 0)),
+    ("ElevatorPulleyBracket.FCStd", "Body002", "Elevator Pulley R", (-53.553, -937.826, 6142.972, -180, 0, 77.9014)),
 ]
 
 # Types that make sense as an assembly component. Used by the fallback
