@@ -170,18 +170,20 @@ The CAD file includes two parts, `Bracket` and `Base`, that need to be fabricate
 
 ### Installation
 
-**NOTE**: The base plates can be installed on either the inside, or the outside, of the airplane. The cables will line up either way. The difference is purely aesthetic.
-
-1. Run the control cables through the holes in the rear jump seat channel, tie weights to the ends, and adjust to approximate the final position of the cables
-2. Set the base plate and pulley brackets on the cabin floor with the cables running through the brackets
+1. Run the control cables through the holes in the rear jump seat channel. Ideally the cables should be connected at both ends and approximately tensioned. Alternatively, tie weights to the ends of the cables,. and adjust to approximate the final position of the cables
+2. Set the pulley brackets on the cabin floor with the cables running through the brackets. The aft edges of the pulley brackets should be flush with the front of the jumpseat channel flange.
 3. Install the pulleys in the brackets (using the bolts, nuts, and washers) with the cables under the pulleys
-4. Align the pulleys and brackets with the cables and make sure everything looks "right"
-5. With the base plates under the brackets, and all of the rivet holes aligned, tape the base plates to the cabin floor skin
-6. Remove the pulleys and brackets while leaving the base plate in place
-7. Match drill the holes in the base plates through the cabin floor skin using a #20 drill bit
-8. Debur the holes
-9. Cleco the base plates and brackets in place. **NOTE**: The base plates can be installed on the inside or the outside of the airplane. The choice is purely aesthetic.
-10. Rivet with A5 rivets **from the outisde** of the airplane
+4. Align the pulleys with the cables and make sure everything looks "right". The brackets may need to be angled slightly to match the cables.
+5. Tape the pulley brackets to the floor skin
+6. Carefully remove the pulleys from the brackets without disturbing the bracket positions
+7. Match drill one hole in each bracket from inside the airplane, using a #20 drill bit
+8. Cleco the holes from the outisde
+9. Match drill the other bracket holes from the inside of the airplane
+10. Using those holes, cleco the base plates to the outside of the airplane
+11. Match drill the holes in the base plates through the cabin floor skin, adding clecos as you go
+12. Remove all of the parts to clean and debur the holes
+13. Cleco all of the parts in place
+13. Rivet with A5 rivets **from the outisde** of the airplane
 11. Re-install the pulleys with the control cables under the pulleys
 
 
