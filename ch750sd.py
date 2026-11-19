@@ -114,19 +114,41 @@ EXTERNAL_PARTS = [
     # Elevator pulley brackets, on the cabin floor just forward of the jump seat
     # rear channel (LS75F33-1, web at Z 6088..6095, bottom flange reaching Z 6113).
     #
+    # PORT AND STARBOARD ARE DIFFERENT PARTS, see issue #5. The builder fitted one
+    # bracket design to both sides and the port cable rubbed on the bottom of the
+    # hole in the nylon bearing, so the port side needs the pulley pin drilled
+    # higher. The document now holds both: PortBracket (Name Body004) with its pin
+    # at local Z 33.5, and StarboardBracket (Name Body) at local Z 25.5. They are
+    # otherwise identical - same blank, same bend, same rivet pattern, differing
+    # only in that one hole. The base plates and pulleys are duplicated too
+    # (Base003/Body005, Pulley002/Body006) purely so each side has its own Assembly
+    # in the source document; all four pairs are verified identical by volume,
+    # bounding box and hole list, so the port units below simply link the copies.
+    #
+    # Which side is which in this coordinate frame: +X is port, confirmed against
+    # the rudder pedals in stl/, which are the only left/right-named meshes. Z
+    # increases forward, established from the firewall sitting at Z ~8000 against
+    # this channel at Z ~6100.
+    #
+    # The 8mm difference matters because it changes the cable approach angle. The
+    # pulley rides 8mm higher on the port side, which flattens the cable's descent
+    # onto the sheave from 8.2 degrees (starboard) to 3.7 degrees (port), and that
+    # is what stops the cable rubbing the bottom of the bearing hole.
+    #
     # Each unit is three links, not one. Linking the source document's Assembly
     # object looked attractive because it carries the reference pulley inside the
     # unit, and it loads fine headless, but in the GUI both links came up "Link not
     # restored" and rendered nothing. Linking the PartDesign bodies instead, which
     # is what the rudder pedal entries above already do and which does restore.
     # The three bodies of one unit do NOT share a placement. Inside the source
-    # Assembly the Bracket (Name Body) and Base (Name Body001) links are both at
-    # identity and the Pulley (Name Body002) link is at Base=(0, 0.0625, 27.5)
-    # Euler=(90,0,0), but here the bracket sits on top of the floor skin and the
-    # base plate goes under it, so they cannot be coaxial. The Bracket tuple is the
-    # unit placement, the Pulley tuple is that composed with the link offset above
-    # rather than being measured by hand, and the Base tuple is the unit placement
-    # slid along the floor normal to the underside. See the skin note below.
+    # Assembly the bracket and base links are both at identity, but here the
+    # bracket sits on top of the floor skin and the base plate goes under it, so
+    # they cannot be coaxial. The Bracket tuple is the unit placement, the Pulley
+    # tuple is that composed with the pulley's link offset
+    # Base=(0, 0.0625, pin Z) Euler=(90,0,0) where pin Z is 35.5 port and 27.5
+    # starboard, rather than being measured by hand, and the Base tuple is the unit
+    # placement slid along the floor normal to the underside. See the skin note
+    # below.
     #
     # Orientation. The base plate lies in local XY with the 50mm upright on local Z,
     # so local X -> along the floor fore-aft, local Y -> lateral, local Z -> the
@@ -174,12 +196,21 @@ EXTERNAL_PARTS = [
     # are the LS75C34-5 ELEVATOR CABLE BEARING - JUMPSEAT parts in stl/, centres
     # X +46.18 and -53.49, Y -926.4 and -929.8, Z 6085.45. Spacing 99.67mm, and the
     # two share a Z to 0.01mm, so the pair is symmetric fore-aft with only a ~3.5mm
-    # offset each way about the centreline. Measured to the sheave centres the
-    # bearings then stand 57.5mm aft of and 11.4mm (left) / 8.0mm (right) above
-    # them, so the cables descend onto the grooves at 11 and 8 degrees, which is
-    # the arrangement in the photograph. The two angles differ only because the
-    # bearings themselves are 3.4mm apart in Y, not because the units are placed
-    # differently; the brackets are mirror images of one placement.
+    # offset each way about the centreline. Measured to the sheave centres with
+    # the per-side brackets in place, the bearings stand 59.2mm aft of and 3.6mm
+    # above the port sheave, and 57.5mm aft of and 8.0mm above the starboard one,
+    # so the cables descend onto the grooves at 3.4 and 7.9 degrees.
+    # Before issue #5 gave the port side its own bracket, both sheaves were at the
+    # lower pin height and the port angle was 11.4 degrees. Raising the port pulley
+    # 8mm along the floor normal is what flattens it, and the rubbing the builder
+    # reported was the cable running down that steeper line into the bottom of the
+    # bearing hole. That mechanism is inferred from the geometry and the reported
+    # symptom, not measured: the fore-aft cable run itself is not in the STL set,
+    # so nothing here can confirm the cable's actual line or where it contacts the
+    # bearing.
+    # The bearing pair itself is still only 3.4mm apart in Y, so the residual
+    # difference between the two approach angles is small and comes from the
+    # bearings, not from the placement.
     #
     # The C75C4-3 parts used here before are RUDDER cable fair leads, exported by
     # mistake. Their centres (X +68.67 and -76.33, 145mm apart, 35x35mm pads 3.4mm
@@ -195,8 +226,8 @@ EXTERNAL_PARTS = [
     # Station (Z) butts the bracket's aft end against the forward face of the
     # channel's lower flange (the lip at Y -959.5..-950 that projects forward to
     # Z 6112.75). That face is perpendicular to the fore-aft axis, read from the STL
-    # facets: it stands at Z 6112.751 across the left bracket's X span and 6112.763
-    # across the right's, so each side gets its own station. The station is solved
+    # facets: it stands at Z 6112.751 across the port bracket's X span and 6112.763
+    # across the starboard's, so each side gets its own station. The station is solved
     # iteratively against the solid rather than computed as face + 24.445mm, because
     # lifting the unit onto the cabin face along the floor normal also raises Z by
     # 0.0495mm, and the contacting point is the lowest point of the upright's foot,
@@ -206,9 +237,10 @@ EXTERNAL_PARTS = [
     # negative controls on this geometry): zero points inside any of the six solids.
     # The skin is clamped between the two plates with no penetration of either.
     # distToShape against the channel mesh vertices, which is a stricter test than
-    # the point-membership sweep, gives the bracket foot 0.235mm (L) / 0.234mm (R)
-    # from the channel and the base plate 0.648mm (L) / 0.642mm (R). Treat those as
-    # the honest clearances rather than claiming contact: the flange's forward-most
+    # the point-membership sweep, gives the bracket foot 0.235mm port / 0.234mm
+    # starboard from the channel and the base plate 0.648mm / 0.642mm. Neither is
+    # changed by the port bracket, since the pin is well above the foot. Treat
+    # those as the honest clearances rather than claiming contact: the flange's forward-most
     # material varies over the lip band by a few tenths of a millimetre (Z 6112.54
     # at the outboard edge of the lip, 6112.763 further inboard), so "touching" is
     # inside the resolution of the airframe mesh here.
@@ -225,12 +257,12 @@ EXTERNAL_PARTS = [
     # The bracket base Z values below happen to land on 6137.196 and 6137.208 again,
     # the same to 3dp as the pre-lift numbers. Not a coincidence to lean on: the
     # solved station is 6137.146 and 6137.158, and the lift adds 0.0495mm of Z.
-    ("ElevatorPulleyBracket.FCStd", "Body", "Elevator Pulley Bracket L", (46.18, -964.679, 6137.196, -90, -77.9014, 0)),
-    ("ElevatorPulleyBracket.FCStd", "Body001", "Elevator Pulley Base L", (46.18, -966.166, 6136.877, -90, -77.9014, 0)),
-    ("ElevatorPulleyBracket.FCStd", "Body002", "Elevator Pulley L", (46.242, -937.789, 6142.96, 0, 0, -77.9014)),
-    ("ElevatorPulleyBracket.FCStd", "Body", "Elevator Pulley Bracket R", (-53.49, -964.715, 6137.208, 90, 77.9014, 0)),
-    ("ElevatorPulleyBracket.FCStd", "Body001", "Elevator Pulley Base R", (-53.49, -966.202, 6136.889, 90, 77.9014, 0)),
-    ("ElevatorPulleyBracket.FCStd", "Body002", "Elevator Pulley R", (-53.553, -937.826, 6142.972, -180, 0, 77.9014)),
+    ("ElevatorPulleyBracket.FCStd", "Body004", "Elevator Pulley Bracket Port", (46.18, -964.679, 6137.196, -90, -77.9014, 0)),
+    ("ElevatorPulleyBracket.FCStd", "Body005", "Elevator Pulley Base Port", (46.18, -966.166, 6136.877, -90, -77.9014, 0)),
+    ("ElevatorPulleyBracket.FCStd", "Body006", "Elevator Pulley Port", (46.243, -929.968, 6144.637, 0, 0, -77.9014)),
+    ("ElevatorPulleyBracket.FCStd", "Body", "Elevator Pulley Bracket Starboard", (-53.49, -964.715, 6137.208, 90, 77.9014, 0)),
+    ("ElevatorPulleyBracket.FCStd", "Body001", "Elevator Pulley Base Starboard", (-53.49, -966.202, 6136.889, 90, 77.9014, 0)),
+    ("ElevatorPulleyBracket.FCStd", "Body002", "Elevator Pulley Starboard", (-53.553, -937.826, 6142.972, -180, 0, 77.9014)),
 ]
 
 # Types that make sense as an assembly component. Used by the fallback

@@ -13,6 +13,10 @@
 # Bodies that are deliberately NOT built:
 #   ACK_E04_ELT_Bracket / ACK_E04_ELT         reference model of the ELT itself
 #   ElevatorPulleyBracket / Pulley            machined phenolic pulley, bought not cut
+#   ElevatorPulleyBracket / Pulley002         duplicate of Pulley, for the PortAssembly
+#   ElevatorPulleyBracket / Base003           duplicate of Base, for the PortAssembly.
+#       The port and starboard base plates are the same part: verified identical by
+#       volume, bounding box and hole list. One STEP covers both sides.
 #   TrailingEdgeBracket / Grommets            variant of BushingsGrommets
 #   TrailingEdgeBracket / SnapBushings        variant of BushingsGrommets
 #   TrailingEdgeBracket / Body2Bushings3Grommets  variant of BushingsGrommets
@@ -26,7 +30,11 @@
 
 ACK_E04_ELT_Bracket.FCStd | ACK_E04_ELT_Bracket | ACK_E04_ELT_Bracket-ACK_E04_ELT_Bracket.step
 
-ElevatorPulleyBracket.FCStd | Bracket | ElevatorPulleyBracket-Bracket.step
+# The port and starboard brackets differ only in where the pulley pin hole is
+# drilled: local Z 33.5 for port, 25.5 for starboard. Same blank, same bend,
+# same rivet pattern, so order one of each and keep them apart.
+ElevatorPulleyBracket.FCStd | PortBracket | ElevatorPulleyBracket-PortBracket.step
+ElevatorPulleyBracket.FCStd | StarboardBracket | ElevatorPulleyBracket-StarboardBracket.step
 ElevatorPulleyBracket.FCStd | Base | ElevatorPulleyBracket-Base.step
 
 FuelReturnHoseBracket.FCStd | Body | FuelReturnHoseBracket.step

@@ -152,10 +152,23 @@ that will keep the control cables from rubbing on the nylon.
 
 ### Fabrication
 
-The CAD file includes two parts, `Bracket` and `Base`, that need to be fabricated. The other parts are only for reference. 
+The CAD file includes three parts that need to be fabricated: `PortBracket`, `StarboardBracket` and `Base`. The other parts are only for reference.
 
-- Send `ElevatorPulleyBracket-Bracket.step` and `ElevatorPulleyBracket-Base.step` to your favorite cut shop (see [Regenerating the STEP files](#regenerating-the-step-files) if you changed the model)
-- Use 1mm thick (0.040") Aluminum for both parts
+**The port and starboard brackets are not interchangeable.** They are the same
+part except for where the pulley pin hole is drilled - 33.5mm up the upright for
+the port bracket and 25.5mm for the starboard bracket. Everything else, the
+blank, the bend, the rivet pattern, is identical, so the two will look almost the
+same on the bench. Mark which is which before you install them.
+
+Why the difference: the cables come down into the brackets at slightly different
+angles on each side. With the single lower hole used on both sides the port cable
+rubbed on the bottom of the hole in the nylon bearing. Drilling the port pulley
+higher flattens its approach and the rubbing stops. Your cable run may differ, so
+check the alignment before you commit to the rivet holes.
+
+- Send `ElevatorPulleyBracket-PortBracket.step`, `ElevatorPulleyBracket-StarboardBracket.step` and `ElevatorPulleyBracket-Base.step` to your favorite cut shop (see [Regenerating the STEP files](#regenerating-the-step-files) if you changed the model)
+- Use 1mm thick (0.040") Aluminum for all three parts
+- Order **one** of each bracket and **two** base plates. There is only one base plate design; it works on both sides. Install them on the **outside** of the airplane. Mounting them inside the cabin does not work, the angle of the cables is wrong
 - The CAD file uses the bend radius and K-factor for [Send Cut Send](https://sendcutsend.com). Adjust as needed for your shop.
 
 ### Parts
@@ -170,10 +183,10 @@ The CAD file includes two parts, `Bracket` and `Base`, that need to be fabricate
 
 ### Installation
 
-1. Run the control cables through the holes in the rear jump seat channel. Ideally the cables should be connected at both ends and approximately tensioned. Alternatively, tie weights to the ends of the cables,. and adjust to approximate the final position of the cables
-2. Set the pulley brackets on the cabin floor with the cables running through the brackets. The aft edges of the pulley brackets should be flush with the front of the jumpseat channel flange.
+1. Run the control cables through the holes in the rear jump seat channel. Ideally the cables should be connected at both ends and approximately tensioned. Alternatively, tie weights to the ends of the cables, and adjust to approximate the final position of the cables
+2. Set the pulley brackets on the cabin floor with the cables running through the brackets. Use the **port** bracket (the higher pulley hole) on the left side and the **starboard** bracket on the right. The aft edges of the pulley brackets should be flush with the front of the jumpseat channel flange.
 3. Install the pulleys in the brackets (using the bolts, nuts, and washers) with the cables under the pulleys
-4. Align the pulleys with the cables and make sure everything looks "right". The brackets may need to be angled slightly to match the cables.
+4. Align the pulleys with the cables and make sure everything looks "right". The brackets may need to be angled slightly to match the cables. Check that the cables pass through the holes in the nylon bearings without touching the edges of them - that is what the difference in pulley height is for
 5. Tape the pulley brackets to the floor skin
 6. Carefully remove the pulleys from the brackets without disturbing the bracket positions
 7. Match drill one hole in each bracket from inside the airplane, using a #20 drill bit
@@ -183,8 +196,8 @@ The CAD file includes two parts, `Bracket` and `Base`, that need to be fabricate
 11. Match drill the holes in the base plates through the cabin floor skin, adding clecos as you go
 12. Remove all of the parts to clean and debur the holes
 13. Cleco all of the parts in place
-13. Rivet with A5 rivets **from the outisde** of the airplane
-11. Re-install the pulleys with the control cables under the pulleys
+14. Rivet with A5 rivets **from the outisde** of the airplane
+15. Re-install the pulleys with the control cables under the pulleys
 
 
 ## Matco Parking Brake Valve Bracket
