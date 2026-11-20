@@ -131,9 +131,24 @@ Tracked files are the seven fabricated-part `.FCStd` documents, `README.md`, `AG
 
 `stl/` and `ch750sd.FCStd` are gitignored **permanently, for IP reasons** — not as ordinary build-output hygiene. The airframe meshes are Zenith's intellectual property, so they must not enter this public repository. Do not propose un-ignoring `stl/` to make a CI job work, and do not treat these as "outputs that could be tracked if it were convenient."
 
+The boundary was settled with Zenith directly (November 2026), and the maintainer's ruling is what the split below encodes. Do not re-litigate it, and do not act on a stricter reading by pulling any of the cleared files.
+
+Publishing is fine — these are the maintainer's own designs, or are inert without data only Zenith customers hold:
+
+- The seven fabricated-part `.FCStd` documents, their STEP exports, and `README.md`.
+- `ch750sd.py` and `scripts/check_stl_list.py` — they only *reference* `stl/`; running them requires the meshes, which cannot be obtained without the airframe CAD.
+- `export_stl.applescript` — it drives eDrawings against the airframe `.EASM` assembly, which Zenith distributes only to customers. The part-number list it contains is a set of catalogue references, not geometry, and is useless without the assembly.
+
+Publishing is not fine, and never will be:
+
+- `stl/` — the airframe meshes themselves.
+- `ch750sd.FCStd` — see below; it embeds the same data.
+
+Zenith has no claim over the brackets designed here. Their concern is unauthorised manufacture of *their* parts from published files, which is why the airframe-derived data stays out and the brackets stay in. Keep it that way in writing too: this section is the durable summary of the exchange, so do not paste the correspondence, or a quoted passage from it, into any tracked file.
+
 `ch750sd.FCStd` is the subtle one and looks link-only but is not: `ch750sd.py` imports the meshes, so the saved document **embeds** them as 31 `MeshKernel*.bms` entries (~6.6 MB of raw airframe mesh data). Committing it publishes the same data as committing `stl/`. It is also caught by the release workflow's `zip "$FCSTD_BUNDLE" *.FCStd` glob, so a stray `git add` would ship it in the next `v*` release. Verified clean as of 2026-11-18: `stl/` and `ch750sd.FCStd` have never appeared in any commit on any branch, and the published `v1.0.1` FreeCAD bundle holds exactly the seven part documents.
 
-Consequence for CI: `ch750sd.py` cannot run on a hosted runner, because it globs `stl/` and there is no way for CI to produce it — `export_stl.applescript` is macOS-only, drives eDrawings, and the airframe CAD is not in the repository. Note also that `check_stl_list.py` deliberately reports success when `stl/` is merely absent, so an unguarded CI job would build a hollow assembly containing only the 12 external links and upload it green. Generating the reference assembly in CI therefore requires either publishing the meshes (ruled out) or an input that a maintainer supplies outside the repository.
+Consequence for CI: **there is deliberately no workflow that generates `ch750sd.FCStd`.** `ch750sd.py` globs `stl/` and no hosted runner can produce it — `export_stl.applescript` is macOS-only, drives eDrawings, and the airframe CAD is not in the repository. Supplying the meshes to a runner would mean storing them in the repo, which defeats the exclusion. Note also that `check_stl_list.py` deliberately reports success when `stl/` is merely absent, so an unguarded job would build a hollow assembly containing only the 12 external links and upload it green. Building the reference assembly headlessly stays a maintainer-side, local step run after `export_stl.applescript`.
 
 ## Workflows
 
