@@ -27,7 +27,7 @@ FREECAD ?= $(shell \
 export LC_ALL := C
 export ZENITH_STEP_DIR := $(STEP_DIR)
 
-.PHONY: all check force list step-files check-stl clean clean-steps help $(PART_NAMES)
+.PHONY: all check force list step-files check-stl reference clean clean-steps help $(PART_NAMES)
 
 # The export script decides what is stale: a STEP file is rebuilt when it is missing or older than its source document.
 # Staleness lives in the script rather than in make because one document produces several STEP files whose names contain spaces.
@@ -70,6 +70,27 @@ step-files:
 check-stl:
 	@python3 scripts/check_stl_list.py
 
+# Build the whole-airframe reference assembly. Manual only: it is never part of `all`,
+# no CI job invokes it, and its output is gitignored. See AGENTS.md ("Zenith intellectual
+# property") for why the result must never be committed.
+#
+# Requires stl/, which is produced on macOS by export_stl.applescript driving eDrawings
+# against the airframe .EASM assembly, available only to Zenith customers:
+#   osascript export_stl.applescript /path/to/airframe.EASM stl/
+reference:
+	@if [ -z "$(FREECAD)" ]; then \
+		echo "freecadcmd not found; install FreeCAD 1.1 or run: make FREECAD=/path/to/freecadcmd" >&2; \
+		exit 1; \
+	fi
+	@meshes=$$(ls stl/*.stl 2>/dev/null | wc -l | tr -d ' '); \
+	if [ "$$meshes" -eq 0 ]; then \
+		echo "stl/ has no meshes, so the assembly would come out containing only the external links." >&2; \
+		echo "Export them first with export_stl.applescript (needs the airframe .EASM and eDrawings)." >&2; \
+		exit 1; \
+	fi; \
+	echo "Building the reference assembly from $$meshes meshes."; \
+	$(FREECAD) ch750sd.py
+
 # Remove the declared outputs, leaving any stray scratch file in place.
 clean-steps:
 	@$(MAKE) --no-print-directory step-files | while IFS= read -r step_file; do \
@@ -90,6 +111,7 @@ help:
 	@echo "  make list            show document / body / output for each part"
 	@echo "  make step-files      print output paths, one per line (for CI)"
 	@echo "  make check-stl       verify export_stl.applescript matches stl/"
+	@echo "  make reference       build the airframe reference assembly (needs stl/; output is local only)"
 	@echo "  make <document>      build one document, e.g. make TrailingEdgeBracket"
 	@echo "  make clean-steps     remove the declared STEP files"
 	@echo "  make clean           remove $(STEP_DIR) entirely, including scratch files"

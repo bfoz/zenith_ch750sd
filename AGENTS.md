@@ -92,6 +92,7 @@ Make targets (`make help` prints them all):
 - `make list` / `make step-files` — show the manifest, or just the output paths under `step/`
 - `make clean-steps` — delete the declared STEP files, leaving the directory
 - `make clean` — delete the whole `step/` directory, including scratch files from an interrupted run
+- `make reference` — run `ch750sd.py` to build `ch750sd.FCStd`. Manual and local only: not in `all`, never invoked by CI, and its output is gitignored. Fails early if `stl/` is empty, since the script would otherwise write an assembly holding nothing but the external links.
 
 `scripts/export_step.py` is the implementation. It runs under `freecadcmd`, opens each document once, exports the listed bodies, and closes **without saving**. Never add a `save()` call there, and never recompute: the script reads the shapes FreeCAD already cached in each file, which is why it works with or without the Sheet Metal add-on installed. It writes to a `.tmp.step` scratch path and validates each file by reading it back and comparing volume before renaming into place.
 
